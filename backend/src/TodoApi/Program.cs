@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<TodoContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<TodoContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
