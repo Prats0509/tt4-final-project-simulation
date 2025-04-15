@@ -9,7 +9,7 @@ RUN dotnet restore
 
 # Copy the rest of the source code
 COPY ./src/TodoApi/. .
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish -c Release -o /app/publishd
 
 # Stage 2 - Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
