@@ -1,28 +1,20 @@
-# Stage 1
+# Stage 1 - Build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-
-# SRC => Source
 WORKDIR /src
 
-ENV PATH="$PATH:/root/.dotnet/tools"
+# Copy project and restore dependencies
+COPY ./src/TodoApi/*.csproj ./TodoApi/
+WORKDIR /src/TodoApi
+RUN dotnet restore
 
-COPY *.csproj .
-
-RUN dotnet restore 
-
-COPY . .
-
+# Copy the rest of the source code
+COPY ./src/TodoApi/. .
 RUN dotnet publish -c Release -o /app/publish
 
-
-# Stage 2
-
+# Stage 2 - Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
-
 WORKDIR /app
-
 COPY --from=build /app/publish .
 
-EXPOSE 8080
-
-ENTRYPOINT ["sh", "-c", "dotnet api.dll"]
+EXPOSE 5004
+ENTRYPOINT ["dotnet", "TodoApi.dll"]

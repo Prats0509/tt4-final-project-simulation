@@ -19,7 +19,7 @@ services:
     depends_on:
       - api
     ports:
-      - "80:80"
+      - "5004:5004"
     networks:
       - internal_network
 
